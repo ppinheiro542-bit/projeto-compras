@@ -1,0 +1,19 @@
+node_modules
+.next
+out
+dist
+.env.local
+.env*.local
+.DS_Store
+*.log
+.vscode
+next-env.d.ts
+
+# Capacitor / Android — artefatos de build
+android/app/build
+android/build
+android/.gradle
+android/local.properties
+android/app/release
+*.apk
+*.aab

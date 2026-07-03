@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Projeto Compras</string>
+    <string name="title_activity_main">Projeto Compras</string>
+    <string name="package_name">br.faculdade.projetocompras</string>
+    <string name="custom_url_scheme">br.faculdade.projetocompras</string>
+</resources>
