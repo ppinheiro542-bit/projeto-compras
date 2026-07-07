@@ -11,7 +11,7 @@ type Props = {
 export function AppShell({ user, children }: Props) {
   return (
     <div className="flex h-screen bg-background">
-      <Sidebar />
+      <Sidebar role={user.role} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header user={user} />
         <main className="flex-1 overflow-auto p-6">{children}</main>
