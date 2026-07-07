@@ -17,3 +17,8 @@ android/local.properties
 android/app/release
 *.apk
 *.aab
+
+# Playwright
+/test-results
+/playwright-report
+/playwright/.cache

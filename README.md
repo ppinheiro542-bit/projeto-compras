@@ -37,7 +37,8 @@ Antes do primeiro uso, configure o backend seguindo **[docs/SUPABASE.md](docs/SU
 | `npm run dev` | Servidor de desenvolvimento |
 | `npm run build` | Build de produção |
 | `npm run typecheck` | Checagem de tipos (`tsc --noEmit`) |
-| `npm test` | Testes automatizados (Vitest) |
+| `npm test` | Testes unitários (Vitest) |
+| `npm run test:e2e` | Testes end-to-end de navegação (Playwright — requer `npx playwright install chromium`) |
 | `npm run cap:sync` / `cap:open:android` | Empacotamento mobile (ver [MOBILE.md](MOBILE.md)) |
 
 ## Progresso do roadmap

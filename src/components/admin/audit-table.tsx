@@ -28,6 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { diffFields, renderAuditValue } from '@/lib/audit-diff';
 import { formatDateTime } from '@/lib/format';
 import {
   ACTION_LABELS,
@@ -43,30 +44,6 @@ const ACTION_VARIANT: Record<AuditAction, 'success' | 'warning' | 'destructive'>
   UPDATE: 'warning',
   DELETE: 'destructive',
 };
-
-type FieldChange = { field: string; before: unknown; after: unknown };
-
-/** Calcula os campos alterados entre old_data e new_data. */
-function diffFields(log: AuditLog): FieldChange[] {
-  const before = log.old_data ?? {};
-  const after = log.new_data ?? {};
-  const keys = Array.from(new Set([...Object.keys(before), ...Object.keys(after)]));
-  const changes: FieldChange[] = [];
-  for (const field of keys.sort()) {
-    const b = before[field];
-    const a = after[field];
-    if (JSON.stringify(b) !== JSON.stringify(a)) {
-      changes.push({ field, before: b, after: a });
-    }
-  }
-  return changes;
-}
-
-function renderValue(v: unknown): string {
-  if (v === null || v === undefined) return '—';
-  if (typeof v === 'object') return JSON.stringify(v);
-  return String(v);
-}
 
 export function AuditTable({ logs }: { logs: AuditLog[] }) {
   const [search, setSearch] = useState('');
@@ -214,10 +191,10 @@ export function AuditTable({ logs }: { logs: AuditLog[] }) {
                     <TableRow key={c.field}>
                       <TableCell className="font-mono text-xs">{c.field}</TableCell>
                       <TableCell className="text-xs text-muted-foreground line-through decoration-destructive/50">
-                        {renderValue(c.before)}
+                        {renderAuditValue(c.before)}
                       </TableCell>
                       <TableCell className="text-xs font-medium">
-                        {renderValue(c.after)}
+                        {renderAuditValue(c.after)}
                       </TableCell>
                     </TableRow>
                   ))}
