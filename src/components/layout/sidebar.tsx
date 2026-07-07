@@ -2,7 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, MessagesSquare, Package, ScrollText, Users } from 'lucide-react';
+import {
+  BarChart3,
+  LayoutDashboard,
+  MessagesSquare,
+  Package,
+  ScrollText,
+  Users,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { isAdmin, type UserRole } from '@/lib/types/profiles';
 import { APP_NAME } from '@/lib/version';
@@ -17,6 +24,7 @@ type NavItem = {
 const mainItems: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/dashboard/products', label: 'Produtos', icon: Package, exact: false },
+  { href: '/dashboard/relatorios', label: 'Relatórios', icon: BarChart3, exact: false },
   { href: '/dashboard/mural', label: 'Mural', icon: MessagesSquare, exact: false },
 ];
 
