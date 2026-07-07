@@ -23,6 +23,8 @@ colando o conteúdo de cada arquivo e clicando em **Run**:
 | 2 | `supabase/migrations/0002_products_and_audit.sql` | `products`, `audit_logs`, trigger de auditoria, 15 produtos |
 | 3 | `supabase/migrations/0003_avatars_storage.sql` | Bucket `avatars` + políticas (edição de perfil) |
 | 4 | `supabase/migrations/0004_posts_and_comments.sql` | `posts`, `comments`, bucket `post-images` (Mural) |
+| 5 | `supabase/migrations/0005_roles_and_governance.sql` | Papéis (admin/gestor/usuário), `is_active`, RLS por papel; promove o usuário mais antigo a admin |
+| 6 | `supabase/migrations/0006_extend_audit.sql` | Estende a auditoria a `profiles`, `posts` e `comments` |
 
 > Se um script reclamar que "policy já existe" ao rodar de novo, é porque já foi
 > aplicado antes — pode ignorar. Migrations não são idempotentes por padrão.
