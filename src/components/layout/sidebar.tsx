@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { isAdmin, type UserRole } from '@/lib/types/profiles';
-import { APP_NAME } from '@/lib/version';
+import { Brand } from './brand';
 
 type NavItem = {
   href: string;
@@ -58,8 +58,8 @@ export function Sidebar({ role = 'usuario' }: { role?: UserRole }) {
 
   return (
     <aside className="hidden w-60 flex-col border-r bg-background md:flex">
-      <div className="flex h-14 items-center border-b px-4 text-sm font-semibold tracking-tight">
-        {APP_NAME}
+      <div className="flex h-14 items-center border-b px-4">
+        <Brand />
       </div>
       <nav className="flex-1 space-y-1 p-2">
         {mainItems.map(renderItem)}

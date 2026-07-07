@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Notification } from '@/lib/types/notifications';
 import type { UserRole } from '@/lib/types/profiles';
 import { APP_VERSION } from '@/lib/version';
@@ -18,7 +19,9 @@ export function AppShell({ user, notifications, children }: Props) {
         <Header user={user} notifications={notifications} />
         <main className="flex-1 overflow-auto p-6">{children}</main>
         <footer className="flex h-8 items-center justify-end border-t px-4 text-xs text-muted-foreground">
-          <span className="font-mono">{APP_VERSION}</span>
+          <Link href="/dashboard/sobre" className="font-mono hover:text-foreground hover:underline">
+            {APP_VERSION}
+          </Link>
         </footer>
       </div>
     </div>
