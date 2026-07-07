@@ -40,6 +40,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     needsConsent = !consent;
   }
 
+  const { data: notifications } = await supabase
+    .from('notifications')
+    .select('id, user_id, type, title, body, link, is_read, created_at')
+    .order('created_at', { ascending: false })
+    .limit(15);
+
   return (
     <AppShell
       user={{
@@ -50,6 +56,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           undefined,
         role: (profile?.role as UserRole | undefined) ?? 'usuario',
       }}
+      notifications={notifications ?? []}
     >
       {children}
       {activeTerms && (
