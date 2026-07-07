@@ -76,6 +76,22 @@ Antes do primeiro uso, configure o backend seguindo **[docs/SUPABASE.md](docs/SU
 - **Consentimento LGPD** versionado (`terms_versions`) com registro de IP e
   user-agent no aceite (`user_consents`), conforme art. 8 da Lei 13.709/2018.
 
+## API / Intercâmbio de dados (Fase 5)
+
+Endpoints REST que retornam JSON, autenticados pela sessão Supabase (mesmo cookie do app):
+
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | `/api/products` | Lista o catálogo. Filtros: `?category=`, `?status=`, `?q=`, `?limit=` |
+| GET | `/api/products/:id` | Retorna um produto específico |
+
+Exemplo de resposta de `/api/products`:
+```json
+{ "count": 15, "data": [ { "id": "…", "name": "Notebook Dell…", "price": 4299.9 } ], "generated_at": "2026-07-06T12:00:00.000Z" }
+```
+
+Além dos endpoints, o catálogo pode ser exportado como arquivo **JSON**, **CSV** e **PDF** direto da tela de Produtos.
+
 ## Estrutura
 
 ```

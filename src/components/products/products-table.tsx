@@ -14,6 +14,7 @@ import {
 } from '@tanstack/react-table';
 import {
   ArrowUpDown,
+  FileJson,
   FileSpreadsheet,
   FileText,
   MoreHorizontal,
@@ -46,7 +47,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { exportProductsCsv, exportProductsPdf } from '@/lib/export';
+import { exportProductsCsv, exportProductsJson, exportProductsPdf } from '@/lib/export';
 import { formatBRL, formatInt } from '@/lib/format';
 import {
   PRODUCT_STATUSES,
@@ -278,6 +279,15 @@ export function ProductsTable({ products, categories, canManage = false }: Props
           >
             <FileText className="mr-2 h-4 w-4" />
             PDF
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => exportProductsJson(filteredProducts)}
+            disabled={filteredProducts.length === 0}
+            title="Exportar para JSON (integrações)"
+          >
+            <FileJson className="mr-2 h-4 w-4" />
+            JSON
           </Button>
           {canManage && (
             <Button onClick={() => setCreateOpen(true)}>

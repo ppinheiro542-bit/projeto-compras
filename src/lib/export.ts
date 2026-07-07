@@ -53,6 +53,19 @@ export function exportProductsCsv(products: Product[]) {
   );
 }
 
+/** Exporta a lista de produtos para JSON (intercâmbio de dados / integrações). */
+export function exportProductsJson(products: Product[]) {
+  const payload = {
+    generated_at: new Date().toISOString(),
+    count: products.length,
+    data: products,
+  };
+  triggerDownload(
+    new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8;' }),
+    `produtos-${timestamp()}.json`,
+  );
+}
+
 /** Exporta a lista de produtos para PDF (import dinâmico do jsPDF). */
 export async function exportProductsPdf(products: Product[]) {
   const { jsPDF } = await import('jspdf');
