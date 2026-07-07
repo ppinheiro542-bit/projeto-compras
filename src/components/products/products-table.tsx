@@ -62,9 +62,10 @@ const ALL = '__all__';
 type Props = {
   products: Product[];
   categories: string[];
+  canManage?: boolean;
 };
 
-export function ProductsTable({ products, categories }: Props) {
+export function ProductsTable({ products, categories, canManage = false }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [createOpen, setCreateOpen] = useState(false);
@@ -143,36 +144,40 @@ export function ProductsTable({ products, categories }: Props) {
         cell: ({ row }) => <StatusBadge status={row.original.status} />,
         filterFn: (row, id, value) => row.getValue(id) === value,
       },
-      {
-        id: 'actions',
-        cell: ({ row }) => (
-          <div className="flex justify-end">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Ações">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setEditing(row.original)}>
-                  <Pencil className="mr-2 h-4 w-4" />
-                  Editar
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => setDeleting(row.original)}
-                  className="text-destructive focus:text-destructive"
-                >
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Excluir
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        ),
-      },
+      ...(canManage
+        ? [
+            {
+              id: 'actions',
+              cell: ({ row }) => (
+                <div className="flex justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" aria-label="Ações">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setEditing(row.original)}>
+                        <Pencil className="mr-2 h-4 w-4" />
+                        Editar
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => setDeleting(row.original)}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Excluir
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              ),
+            } as ColumnDef<Product>,
+          ]
+        : []),
     ],
-    [],
+    [canManage],
   );
 
   const table = useReactTable({
@@ -274,10 +279,12 @@ export function ProductsTable({ products, categories }: Props) {
             <FileText className="mr-2 h-4 w-4" />
             PDF
           </Button>
-          <Button onClick={() => setCreateOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            Novo produto
-          </Button>
+          {canManage && (
+            <Button onClick={() => setCreateOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              Novo produto
+            </Button>
+          )}
         </div>
       </div>
 

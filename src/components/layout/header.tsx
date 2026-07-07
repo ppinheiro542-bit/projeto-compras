@@ -1,10 +1,11 @@
+import type { UserRole } from '@/lib/types/profiles';
 import { APP_NAME } from '@/lib/version';
 import { Clock } from './clock';
 import { ThemeToggle } from './theme-toggle';
 import { UserMenu } from './user-menu';
 
 type Props = {
-  user: { email: string; name?: string };
+  user: { email: string; name?: string; role: UserRole };
 };
 
 export function Header({ user }: Props) {

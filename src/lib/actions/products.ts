@@ -3,7 +3,18 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
+import { getCurrentProfile } from '@/lib/auth';
+import { canManage } from '@/lib/types/profiles';
 import { PRODUCT_STATUSES } from '@/lib/types/products';
+
+/** Bloqueia quem não é gestor/admin antes de qualquer escrita (RLS reforça no banco). */
+async function ensureCanManage(): Promise<{ error: string } | null> {
+  const profile = await getCurrentProfile();
+  if (!canManage(profile?.role)) {
+    return { error: 'Você não tem permissão para gerenciar produtos.' };
+  }
+  return null;
+}
 
 const productSchema = z.object({
   name: z.string().trim().min(2, 'Nome deve ter ao menos 2 caracteres'),
@@ -58,6 +69,9 @@ function formatFieldErrors(error: z.ZodError): ProductActionResult {
 }
 
 export async function createProduct(formData: FormData): Promise<ProductActionResult> {
+  const denied = await ensureCanManage();
+  if (denied) return denied;
+
   const parsed = parseForm(formData);
   if (!parsed.success) return formatFieldErrors(parsed.error);
 
@@ -78,6 +92,9 @@ export async function updateProduct(
   id: string,
   formData: FormData,
 ): Promise<ProductActionResult> {
+  const denied = await ensureCanManage();
+  if (denied) return denied;
+
   const parsed = parseForm(formData);
   if (!parsed.success) return formatFieldErrors(parsed.error);
 
@@ -95,6 +112,9 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: string): Promise<ProductActionResult> {
+  const denied = await ensureCanManage();
+  if (denied) return denied;
+
   const supabase = await createClient();
   const { error } = await supabase.from('products').delete().eq('id', id);
   if (error) return { error: error.message };

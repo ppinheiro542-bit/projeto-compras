@@ -1,9 +1,10 @@
+import type { UserRole } from '@/lib/types/profiles';
 import { APP_VERSION } from '@/lib/version';
 import { Header } from './header';
 import { Sidebar } from './sidebar';
 
 type Props = {
-  user: { email: string; name?: string };
+  user: { email: string; name?: string; role: UserRole };
   children: React.ReactNode;
 };
 

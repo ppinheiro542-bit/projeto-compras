@@ -1,21 +1,24 @@
 import { createClient } from '@/lib/supabase/server';
 import { ProductsTable } from '@/components/products/products-table';
 import { ProductsCharts } from '@/components/products/products-charts';
+import { getCurrentProfile } from '@/lib/auth';
+import { canManage } from '@/lib/types/profiles';
 import type { Product } from '@/lib/types/products';
 
 export const metadata = { title: 'Produtos · Projeto Compras' };
 
 export default async function ProductsPage() {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const [{ data, error }, profile] = await Promise.all([
+    supabase.from('products').select('*').order('created_at', { ascending: false }),
+    getCurrentProfile(),
+  ]);
 
   if (error) throw new Error(error.message);
 
   const products = (data ?? []) as Product[];
   const categories = Array.from(new Set(products.map((p) => p.category))).sort();
+  const userCanManage = canManage(profile?.role);
 
   return (
     <div className="space-y-6">
@@ -27,7 +30,11 @@ export default async function ProductsPage() {
         </p>
       </header>
       <ProductsCharts products={products} />
-      <ProductsTable products={products} categories={categories} />
+      <ProductsTable
+        products={products}
+        categories={categories}
+        canManage={userCanManage}
+      />
     </div>
   );
 }

@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { AppShell } from '@/components/layout/app-shell';
 import { ConsentGate } from '@/components/consent/consent-gate';
+import { AccountDisabled } from '@/components/layout/account-disabled';
+import type { UserRole } from '@/lib/types/profiles';
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -9,6 +11,17 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect('/login');
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('full_name, role, is_active')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  // Conta desativada por um administrador: bloqueia o acesso ao app.
+  if (profile && profile.is_active === false) {
+    return <AccountDisabled email={user.email ?? ''} />;
+  }
 
   const { data: activeTerms } = await supabase
     .from('terms_versions')
@@ -31,7 +44,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <AppShell
       user={{
         email: user.email ?? '',
-        name: (user.user_metadata?.full_name as string | undefined) ?? undefined,
+        name:
+          (profile?.full_name as string | undefined) ??
+          (user.user_metadata?.full_name as string | undefined) ??
+          undefined,
+        role: (profile?.role as UserRole | undefined) ?? 'usuario',
       }}
     >
       {children}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { LogOut, User, UserCog } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,9 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ROLE_LABELS, type UserRole } from '@/lib/types/profiles';
 
 type Props = {
-  user: { email: string; name?: string };
+  user: { email: string; name?: string; role: UserRole };
 };
 
 export function UserMenu({ user }: Props) {
@@ -28,6 +30,9 @@ export function UserMenu({ user }: Props) {
         <DropdownMenuLabel>
           <div className="font-medium">{user.name ?? 'Usuário'}</div>
           <div className="text-xs text-muted-foreground">{user.email}</div>
+          <Badge variant="secondary" className="mt-1.5 font-normal">
+            {ROLE_LABELS[user.role]}
+          </Badge>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
