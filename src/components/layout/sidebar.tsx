@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, MessagesSquare, Package, Users } from 'lucide-react';
+import { LayoutDashboard, MessagesSquare, Package, ScrollText, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { isAdmin, type UserRole } from '@/lib/types/profiles';
 import { APP_NAME } from '@/lib/version';
@@ -22,6 +22,7 @@ const mainItems: NavItem[] = [
 
 const adminItems: NavItem[] = [
   { href: '/dashboard/admin/usuarios', label: 'Usuários', icon: Users, exact: false },
+  { href: '/dashboard/admin/auditoria', label: 'Auditoria', icon: ScrollText, exact: false },
 ];
 
 export function Sidebar({ role = 'usuario' }: { role?: UserRole }) {
